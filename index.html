@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#101827" />
+  <title>Study Tracker | IBPS RRB SO Scale II</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Study Tracker home">
+        <span class="brand-mark">S</span>
+        <span><strong>Study Tracker</strong><small>IBPS RRB SO · Scale II</small></span>
+      </a>
+      <div class="top-actions">
+        <button class="icon-btn" id="themeBtn" title="Toggle theme" aria-label="Toggle theme">◐</button>
+        <button class="btn btn-ghost" id="exportBtn">Export</button>
+        <button class="btn btn-ghost" id="importBtn">Import</button>
+        <input type="file" id="importFile" accept="application/json,.json" hidden />
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">YOUR PERSONAL PREPARATION SPACE</p>
+          <h1>Study. Revise. <span>Improve.</span></h1>
+          <p class="hero-sub">A simple, flexible daily tracker for your November–December 2026 preparation.</p>
+          <div class="hero-meta">
+            <span class="meta-pill">📅 01 Nov – 31 Dec 2026</span>
+            <span class="meta-pill">💾 Auto-saves on this device</span>
+          </div>
+        </div>
+        <div class="hero-ring" aria-label="Overall completion">
+          <div class="ring" id="overallRing"><div><strong id="overallPercent">0%</strong><small>completed</small></div></div>
+        </div>
+      </section>
+
+      <section class="stats-grid" aria-label="Study statistics">
+        <article class="stat-card"><span class="stat-icon purple">▦</span><div><small>Study tasks done</small><strong id="studyDone">0</strong><em id="studyTotal">of 0</em></div></article>
+        <article class="stat-card"><span class="stat-icon blue">↻</span><div><small>Revisions done</small><strong id="revisionDone">0</strong><em id="revisionTotal">of 0</em></div></article>
+        <article class="stat-card"><span class="stat-icon green">◷</span><div><small>Study hours</small><strong id="totalHours">0h</strong><em>logged</em></div></article>
+        <article class="stat-card"><span class="stat-icon orange">▤</span><div><small>Days tracked</small><strong id="daysTracked">0</strong><em>out of 61</em></div></article>
+      </section>
+
+      <section class="panel controls-panel">
+        <div class="section-heading">
+          <div><p class="eyebrow">WORKSPACE</p><h2>Daily tracker</h2></div>
+          <div class="month-switch">
+            <button class="icon-btn" id="prevMonth" aria-label="Previous month">‹</button>
+            <strong id="monthLabel">November 2026</strong>
+            <button class="icon-btn" id="nextMonth" aria-label="Next month">›</button>
+          </div>
+        </div>
+        <div class="toolbar">
+          <label class="search-box">⌕ <input id="searchInput" type="search" placeholder="Search chapter, subject or note..." /></label>
+          <select id="subjectFilter" aria-label="Filter by subject"><option value="all">All subjects</option></select>
+          <select id="statusFilter" aria-label="Filter by status">
+            <option value="all">All tasks</option><option value="pending">Pending</option><option value="study">Study completed</option><option value="revision">Revision completed</option><option value="done">Study + revision done</option>
+          </select>
+          <button class="btn btn-soft" id="todayBtn">Today</button>
+        </div>
+        <div class="month-summary" id="monthSummary"></div>
+        <div class="days-grid" id="daysGrid"></div>
+      </section>
+
+      <section class="panel day-panel" id="dayPanel">
+        <div class="section-heading day-heading">
+          <div><p class="eyebrow">SELECTED DATE</p><h2 id="selectedDateTitle">Sunday, 1 November 2026</h2><p class="muted" id="selectedDateSub">Plan your study for this day.</p></div>
+          <div class="day-actions"><button class="btn btn-ghost" id="clearDayBtn">Clear this day</button></div>
+        </div>
+        <div class="day-metrics">
+          <div><span>Daily progress</span><strong id="dayProgressText">0%</strong></div>
+          <div class="progress-track"><span id="dayProgressBar"></span></div>
+        </div>
+        <div class="daily-controls">
+          <label class="field-label">Study hours <input id="hoursInput" type="number" min="0" max="24" step="0.5" placeholder="e.g. 4.5" /></label>
+          <label class="field-label">Day status
+            <select id="dayStatus"><option value="normal">Regular day</option><option value="light">Light study day</option><option value="mock">Mock test / practice</option><option value="off">Rest day</option></select>
+          </label>
+          <button class="btn btn-soft" id="markDayBtn">Mark all study done</button>
+        </div>
+        <div class="task-legend"><span><i class="dot study-dot"></i> Study</span><span><i class="dot revision-dot"></i> Revision</span><span class="muted">Tick independently for each chapter.</span></div>
+        <div id="taskGroups"></div>
+        <div class="notes-wrap">
+          <label for="dayNotes">Daily notes / doubts / tomorrow's plan</label>
+          <textarea id="dayNotes" rows="3" placeholder="What did you learn? What needs more practice? Write your notes here..."></textarea>
+        </div>
+      </section>
+
+      <section class="panel manage-panel">
+        <div class="section-heading">
+          <div><p class="eyebrow">MAKE IT YOURS</p><h2>Customize your syllabus</h2><p class="muted">Add, rename, reorder or remove topics whenever you need.</p></div>
+          <button class="btn btn-primary" id="addSubjectBtn">＋ Add subject</button>
+        </div>
+        <div id="syllabusManager"></div>
+        <div class="danger-zone">
+          <div><strong>Reset all tracker data</strong><small>Clears daily ticks, hours, notes and customizations. Export a backup first.</small></div>
+          <button class="btn btn-danger" id="resetAllBtn">Reset all</button>
+        </div>
+      </section>
+
+      <footer><span>Made for consistent preparation.</span><span>Version 1.0 · Your data stays in this browser.</span></footer>
+    </main>
+  </div>
+
+  <dialog id="editDialog" class="modal">
+    <form method="dialog" id="editForm">
+      <div class="modal-head"><div><p class="eyebrow">CUSTOMIZE</p><h3 id="dialogTitle">Add chapter</h3></div><button class="icon-btn" value="cancel" aria-label="Close">×</button></div>
+      <label class="field-label">Subject name<input id="editSubject" required placeholder="e.g. Quantitative Aptitude" /></label>
+      <label class="field-label">Chapter / topic name<input id="editChapter" required placeholder="e.g. Percentage" /></label>
+      <label class="field-label">Category<select id="editCategory"></select></label>
+      <div class="modal-actions"><button class="btn btn-ghost" value="cancel">Cancel</button><button class="btn btn-primary" id="saveEditBtn" value="default">Save changes</button></div>
+    </form>
+  </dialog>
+  <dialog id="subjectDialog" class="modal">
+    <form method="dialog" id="subjectForm">
+      <div class="modal-head"><div><p class="eyebrow">NEW SUBJECT</p><h3>Add a subject</h3></div><button class="icon-btn" value="cancel" aria-label="Close">×</button></div>
+      <label class="field-label">Subject name<input id="newSubjectName" required placeholder="e.g. General Awareness" /></label>
+      <label class="field-label">Initial chapters<textarea id="newSubjectChapters" rows="4" placeholder="Enter one chapter per line (optional)"></textarea></label>
+      <div class="modal-actions"><button class="btn btn-ghost" value="cancel">Cancel</button><button class="btn btn-primary" id="createSubjectBtn" value="default">Create subject</button></div>
+    </form>
+  </dialog>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
